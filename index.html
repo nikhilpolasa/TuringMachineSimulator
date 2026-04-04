@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive Turing Machine simulator with a mini programming language, CFG-based parser, step-by-step tape visualization, and real state-transition execution.">
+    <title>Turing Machine Simulator — Theory of Computation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙</text></svg>">
+</head>
+<body>
+
+<!-- Ambient glow orbs -->
+<div class="ambient-orb orb-1"></div>
+<div class="ambient-orb orb-2"></div>
+<div class="ambient-orb orb-3"></div>
+
+<header class="app-header">
+    <h1>⟨ Turing Machine Simulator ⟩</h1>
+    <p class="subtitle">Write code · Parse to AST · Execute on a genuine Turing Machine · Watch every transition</p>
+</header>
+
+<main class="app-grid">
+
+    <!-- ─── Code Editor ─────────────────────────────────── -->
+    <section class="panel editor-panel" id="editor-section">
+        <div class="panel-title"><span class="dot dot-cyan"></span> Code Editor</div>
+        <textarea id="code-editor" spellcheck="false"
+                  placeholder="x = 3&#10;y = x + 2&#10;z = y - 1"></textarea>
+    </section>
+
+    <!-- ─── Controls ────────────────────────────────────── -->
+    <section class="panel control-panel" id="control-section">
+        <div class="panel-title"><span class="dot dot-magenta"></span> Controls</div>
+
+        <div class="control-buttons">
+            <button class="ctl-btn run"   id="btn-run">▶ Run</button>
+            <button class="ctl-btn pause" id="btn-pause" disabled>⏸ Pause</button>
+            <button class="ctl-btn step"  id="btn-step">⏭ Step</button>
+            <button class="ctl-btn reset" id="btn-reset">⟳ Reset</button>
+        </div>
+
+        <div class="speed-row">
+            <label for="speed-slider">Speed</label>
+            <input type="range" id="speed-slider" min="1" max="100" value="40">
+            <span id="speed-label">40%</span>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-label">State</div>
+                <div class="stat-value" id="state-display">—</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Steps</div>
+                <div class="stat-value" id="step-counter">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Phase</div>
+                <div class="stat-value" id="phase-display">Idle</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Current Transition ──────────────────────────── -->
+    <section class="panel transition-panel" id="transition-section">
+        <div class="panel-title"><span class="dot dot-green"></span> Current Transition</div>
+        <div id="transition-display" class="transition-display">
+            <span class="transition-idle">Press <strong>Run</strong> or <strong>Step</strong> to begin</span>
+        </div>
+    </section>
+
+    <!-- ─── Tape Visualization ──────────────────────────── -->
+    <section class="panel tape-panel" id="tape-section">
+        <div class="panel-title"><span class="dot dot-green"></span> Tape</div>
+        <div id="tape-container"></div>
+        <!-- Halt banner -->
+        <div id="halt-banner" class="halt-banner hidden">
+            <span class="halt-icon">✔</span>
+            <span class="halt-text">MACHINE HALTED</span>
+        </div>
+    </section>
+
+    <!-- ─── Execution Log ───────────────────────────────── -->
+    <section class="panel log-panel-wrap" id="log-section">
+        <div class="panel-title"><span class="dot dot-orange"></span> Execution Log</div>
+        <div id="log-panel"></div>
+    </section>
+
+    <!-- ─── Variables ───────────────────────────────────── -->
+    <section class="panel vars-panel-wrap" id="vars-section">
+        <div class="panel-title"><span class="dot dot-purple"></span> Variables</div>
+        <div id="vars-panel"><span class="empty-hint">No variables yet</span></div>
+    </section>
+
+</main>
+
+<!-- Error toast -->
+<div id="error-panel"></div>
+
+<!-- Scripts (order matters: dependencies first) -->
+<script src="parser.js"></script>
+<script src="tm.js"></script>
+<script src="executor.js"></script>
+<script src="ui.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>
