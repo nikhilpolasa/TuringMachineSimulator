@@ -16,6 +16,7 @@ class UI {
     constructor() {
         // Panels
         this.codeEditor        = document.getElementById('code-editor');
+        this.lineHighlights    = document.getElementById('editor-line-highlights');
         this.tapeContainer     = document.getElementById('tape-container');
         this.stateDisplay      = document.getElementById('state-display');
         this.stepDisplay       = document.getElementById('step-counter');
@@ -38,6 +39,13 @@ class UI {
         this._prevVarVals = {};
         // Track last written cell for flash animation
         this._lastWrittenPos = null;
+
+        // Sync line-highlight scroll with editor scroll
+        if (this.codeEditor && this.lineHighlights) {
+            this.codeEditor.addEventListener('scroll', () => {
+                this.lineHighlights.scrollTop = this.codeEditor.scrollTop;
+            });
+        }
     }
 
     // ── Tape rendering ───────────────────────────────────────
@@ -224,7 +232,7 @@ class UI {
         return '';
     }
 
-    // ── Error display ────────────────────────────────────────
+    // ── Error display ────────────────────────────────────
     showError(msg) {
         this.errorPanel.textContent = msg;
         this.errorPanel.classList.add('visible');
@@ -232,6 +240,32 @@ class UI {
     clearError() {
         this.errorPanel.textContent = '';
         this.errorPanel.classList.remove('visible');
+    }
+
+    // ── Error line highlighting ──────────────────────────
+    highlightErrorLine(lineNum) {
+        if (!this.lineHighlights || !this.codeEditor) return;
+
+        // Get computed line-height of the textarea
+        const cs = window.getComputedStyle(this.codeEditor);
+        const lineHeight = parseFloat(cs.lineHeight) || (parseFloat(cs.fontSize) * 1.65);
+        const paddingTop = parseFloat(cs.paddingTop) || 0;
+
+        const marker = document.createElement('div');
+        marker.className = 'error-line-marker';
+        marker.style.top  = `${paddingTop + (lineNum - 1) * lineHeight}px`;
+        marker.style.height = `${lineHeight}px`;
+
+        this.lineHighlights.appendChild(marker);
+
+        // Sync scroll position
+        this.lineHighlights.scrollTop = this.codeEditor.scrollTop;
+    }
+
+    clearLineHighlights() {
+        if (this.lineHighlights) {
+            this.lineHighlights.innerHTML = '';
+        }
     }
 
     // ── Button states ────────────────────────────────────────
@@ -262,7 +296,7 @@ class UI {
         this.speedLabel.textContent = `${this.speedSlider.value}%`;
     }
 
-    // ── Full reset of UI-specific state ──────────────────────
+    // ── Full reset of UI-specific state ──────────────────
     resetUIState() {
         this._prevVarVals    = {};
         this._lastWrittenPos = null;
@@ -270,5 +304,6 @@ class UI {
         this.renderTransition(null);
         this.renderPhase('Idle');
         this.stateDisplay.classList.remove('halted');
+        this.clearLineHighlights();
     }
 }

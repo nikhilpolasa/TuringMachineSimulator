@@ -41,11 +41,27 @@
         ui.clearError();
         ui.clearLog();
         ui.resetUIState();
+        ui.clearLineHighlights();
         const source = ui.codeEditor.value.trim();
         if (!source) { ui.showError('Code editor is empty.'); return false; }
 
         try {
-            const ast    = parse(source);
+            // 1. Parse source → AST
+            const ast = parse(source);
+
+            // 2. Semantic validation (BEFORE execution)
+            const validator  = new Validator();
+            const validation = validator.validate(ast);
+
+            if (!validation.valid) {
+                const firstErr = validation.errors[0];
+                const errMsg = `Line ${firstErr.line}: ${firstErr.message}`;
+                ui.showError(errMsg);
+                ui.highlightErrorLine(firstErr.line);
+                return false;
+            }
+
+            // 3. Compile to TM instructions (only if validation passed)
             const exec   = new Executor();
             const result = exec.compile(ast);
 

@@ -25,8 +25,11 @@
     <!-- ─── Code Editor ─────────────────────────────────── -->
     <section class="panel editor-panel" id="editor-section">
         <div class="panel-title"><span class="dot dot-cyan"></span> Code Editor</div>
-        <textarea id="code-editor" spellcheck="false"
-                  placeholder="x = 3&#10;y = x + 2&#10;z = y - 1"></textarea>
+        <div class="editor-wrapper">
+            <div id="editor-line-highlights" class="editor-line-highlights"></div>
+            <textarea id="code-editor" spellcheck="false"
+                      placeholder="x = 3&#10;y = x + 2&#10;z = y - 1"></textarea>
+        </div>
     </section>
 
     <!-- ─── Controls ────────────────────────────────────── -->
@@ -101,6 +104,7 @@
 <!-- Scripts (order matters: dependencies first) -->
 <script src="parser.js"></script>
 <script src="tm.js"></script>
+<script src="validator.js"></script>
 <script src="executor.js"></script>
 <script src="ui.js"></script>
 <script src="main.js"></script>
