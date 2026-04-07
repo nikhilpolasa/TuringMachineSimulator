@@ -5,11 +5,13 @@
  *   • Color-coded execution log (write/move/halt/read/inc/dec)
  *   • Variable ↔ tape cell hover linking
  *   • Just-written cell flash animation
- *   • Current-transition display panel
+ *   • Current-transition display panel with flash effect
  *   • Phase indicator (Reading / Writing / Moving / Halting / Idle)
  *   • Halt banner with animated reveal
  *   • Variable-value change pop animation
  *   • Halted state green glow on state display
+ *   • Smooth head movement animation (head-entering class)
+ *   • Transition panel flash on update
  */
 
 class UI {
@@ -39,6 +41,8 @@ class UI {
         this._prevVarVals = {};
         // Track last written cell for flash animation
         this._lastWrittenPos = null;
+        // Track previous head position for smooth movement animation
+        this._prevHeadPos = null;
 
         // Sync line-highlight scroll with editor scroll
         if (this.codeEditor && this.lineHighlights) {
@@ -61,6 +65,9 @@ class UI {
             }
         }
 
+        // Check if head has moved (for smooth animation)
+        const headMoved = (this._prevHeadPos !== null && this._prevHeadPos !== headPos);
+
         let html = '<div class="tape-strip">';
         for (let i = bounds.lo; i <= bounds.hi; i++) {
             const val      = tm.read(i);
@@ -73,6 +80,8 @@ class UI {
             if (isHead)    cls += ' head';
             if (label)     cls += ' labelled';
             if (isWritten) cls += ' just-written';
+            // Add head-entering animation when head has moved to this cell
+            if (isHead && headMoved) cls += ' head-entering';
 
             html += `<div class="${cls}" data-pos="${i}">
                         <span class="cell-label">${label}</span>
@@ -84,6 +93,9 @@ class UI {
         html += '<div class="head-indicator">▲ Head</div>';
 
         this.tapeContainer.innerHTML = html;
+
+        // Update previous head position
+        this._prevHeadPos = headPos;
 
         // Clear the written pos after one render so it only flashes once
         this._lastWrittenPos = null;
@@ -142,6 +154,7 @@ class UI {
             this.transitionDisplay.innerHTML =
                 `<span class="t-to">q_accept</span>
                  <span class="t-desc">— ${entry.desc}</span>`;
+            this._flashTransition();
             return;
         }
 
@@ -153,6 +166,15 @@ class UI {
              <span class="t-write">${fmtSym(entry.write)},</span>
              <span class="t-dir">${entry.dir}</span><span class="t-to">)</span>
              <span class="t-desc">${entry.desc}</span>`;
+
+        this._flashTransition();
+    }
+
+    /** Trigger a brief flash animation on the transition display. */
+    _flashTransition() {
+        this.transitionDisplay.classList.remove('flash');
+        void this.transitionDisplay.offsetWidth; // reflow to restart animation
+        this.transitionDisplay.classList.add('flash');
     }
 
     // ── Halt Banner ──────────────────────────────────────────
@@ -300,6 +322,7 @@ class UI {
     resetUIState() {
         this._prevVarVals    = {};
         this._lastWrittenPos = null;
+        this._prevHeadPos    = null;
         this.hideHaltBanner();
         this.renderTransition(null);
         this.renderPhase('Idle');
