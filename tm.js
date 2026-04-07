@@ -6,11 +6,6 @@
  *   • Read / Write / Move head
  *   • Instruction list execution (each instruction = one TM transition)
  *   • Full execution log with snapshots
- *
- * Instead of a static transition table (which caused infinite-loop bugs
- * with wildcard matching), the TM now executes a linear instruction list
- * with explicit branching for loops.  Every instruction still represents
- * a genuine  δ(state, read) → (nextState, write, direction)  transition.
  */
 
 const BLANK     = 0;
@@ -22,33 +17,19 @@ class TuringMachine {
     constructor() { this.reset(); }
 
     reset() {
-        this.tape   = new Map();   // position → integer value
+        this.tape   = new Map();   
         this.head   = 0;
         this.state  = 'q_init';
         this.halted = false;
         this.steps  = 0;
         this.log    = [];
 
-        /**
-         * Program: array of instruction objects.
-         * Each instruction:
-         * {
-         *   state:     string,          — TM state label
-         *   action:    'WRITE'|'MOVE'|'READ'|'BRANCH'|'HALT',
-         *   value:     number|undefined, — for WRITE
-         *   dir:       'L'|'R'|'S',     — for MOVE
-         *   desc:      string,          — human‑readable
-         *   // BRANCH only:
-         *   cond:      'ZERO'|'NONZERO',
-         *   target:    number,           — instruction index to jump to
-         * }
-         */
         this.program = [];
-        this.pc      = 0;            // program counter
-        this._acc    = 0;            // accumulator (for read → carry → write)
+        this.pc      = 0;           
+        this._acc    = 0;            
     }
 
-    // ── Tape helpers ─────────────────────────────────────────
+    //  Tape helpers 
     read(pos) {
         const p = (pos !== undefined && pos !== null) ? pos : this.head;
         return this.tape.has(p) ? this.tape.get(p) : BLANK;
@@ -58,7 +39,7 @@ class TuringMachine {
         this.tape.set(p, val);
     }
 
-    // ── Execute one instruction ──────────────────────────────
+    //  Execute one instruction 
     step() {
         if (this.halted) return false;
         if (this.pc >= this.program.length) {
@@ -164,7 +145,7 @@ class TuringMachine {
         return !this.halted;
     }
 
-    // ── Logging ──────────────────────────────────────────────
+    //  Logging 
     _logTransition(fromState, toState, readVal, writeVal, dir, desc) {
         this.log.push({
             step:       this.steps,
@@ -197,7 +178,7 @@ class TuringMachine {
 
     _fmt(s) { return s === BLANK ? '□' : String(s); }
 
-    // ── Snapshots ────────────────────────────────────────────
+    //  Snapshots 
     getSnapshot() {
         const keys = [...this.tape.keys(), this.head];
         const lo   = Math.min(...keys, 0) - 3;

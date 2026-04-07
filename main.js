@@ -1,13 +1,6 @@
 /**
  * main.js — Application orchestrator
  * Wires  parser → executor → TM → UI.
- *
- * Enhancements:
- *   • Phase tracking (Reading / Writing / Moving / Halting)
- *   • Written-cell flash animations forwarded to UI
- *   • Halt banner display
- *   • Current transition display updated each step
- *   • Safety cap on branch-skip loops to prevent UI freeze
  */
 
 (function () {
@@ -19,7 +12,7 @@
     let running = false;
     let timerId = null;
 
-    // ── Initialise ───────────────────────────────────────────
+    //  Initialise 
     document.addEventListener('DOMContentLoaded', () => {
         ui = new UI();
 
@@ -36,7 +29,7 @@
         showIdle();
     });
 
-    // ── Compile ──────────────────────────────────────────────
+    //  Compile 
     function compile() {
         ui.clearError();
         ui.clearLog();
@@ -87,7 +80,7 @@
         }
     }
 
-    // ── Controls ─────────────────────────────────────────────
+    //  Controls 
     function onRun() {
         if (!tm) { if (!compile()) return; }
         if (tm.halted) return;
@@ -121,7 +114,7 @@
         showIdle();
     }
 
-    // ── Execution loop ───────────────────────────────────────
+    //  Execution loop 
     function tick() {
         if (!running || !tm || tm.halted) { onPause(); return; }
         doStep();
@@ -129,11 +122,7 @@
         timerId = setTimeout(tick, ui.getDelay());
     }
 
-    /**
-     * Execute one visible TM step.
-     * BRANCH instructions are invisible (control flow), so we loop
-     * inside tm.step() until a visible step is produced.
-     */
+
     function doStep() {
         let attempts = 0;
         const prevLogLen = tm.log.length;
@@ -203,7 +192,7 @@
         return 'Executing';
     }
 
-    // ── Idle state ───────────────────────────────────────────
+    //  Idle state 
     function showIdle() {
         const dummy = new TuringMachine();
         ui.renderTape(dummy, {});

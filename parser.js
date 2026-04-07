@@ -11,7 +11,7 @@
  * Produces an Abstract Syntax Tree (AST).
  */
 
-// ── Token Types ──────────────────────────────────────────────
+//  Token Types 
 const TokenType = Object.freeze({
     NUMBER:     'NUMBER',
     IDENTIFIER: 'IDENTIFIER',
@@ -34,7 +34,7 @@ class Token {
     }
 }
 
-// ── Lexer ────────────────────────────────────────────────────
+//  Lexer 
 class Lexer {
     constructor(source) {
         this.src = source;
@@ -89,14 +89,14 @@ class Lexer {
     }
 }
 
-// ── AST Nodes ────────────────────────────────────────────────
+//  AST Nodes 
 class ProgramNode      { constructor(stmts)            { this.type = 'Program';       this.statements = stmts; } }
 class AssignmentNode   { constructor(name, expr, line) { this.type = 'Assignment';    this.variable = name; this.expression = expr; this.line = line; } }
 class BinaryOpNode     { constructor(op, left, right)  { this.type = 'BinaryOp';      this.op = op; this.left = left; this.right = right; } }
 class NumberLiteralNode{ constructor(v)                 { this.type = 'NumberLiteral'; this.value = v; } }
 class IdentifierNode   { constructor(n)                 { this.type = 'Identifier';    this.name = n; } }
 
-// ── Parser ───────────────────────────────────────────────────
+//  Parser 
 class Parser {
     constructor(tokens) { this.tokens = tokens; this.pos = 0; }
 
@@ -166,7 +166,7 @@ class Parser {
     }
 }
 
-// ── Public API ───────────────────────────────────────────────
+//  Public API 
 function parse(source) {
     const tokens = new Lexer(source).tokenize();
     return new Parser(tokens).parse();

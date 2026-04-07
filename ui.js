@@ -1,17 +1,5 @@
 /**
  * ui.js — Rendering, animation, and DOM interaction
- *
- * Enhancements over the original:
- *   • Color-coded execution log (write/move/halt/read/inc/dec)
- *   • Variable ↔ tape cell hover linking
- *   • Just-written cell flash animation
- *   • Current-transition display panel with flash effect
- *   • Phase indicator (Reading / Writing / Moving / Halting / Idle)
- *   • Halt banner with animated reveal
- *   • Variable-value change pop animation
- *   • Halted state green glow on state display
- *   • Smooth head movement animation (head-entering class)
- *   • Transition panel flash on update
  */
 
 class UI {
@@ -37,14 +25,10 @@ class UI {
         this.btnStep  = document.getElementById('btn-step');
         this.btnReset = document.getElementById('btn-reset');
 
-        // Track previous variable values for change highlighting
         this._prevVarVals = {};
-        // Track last written cell for flash animation
         this._lastWrittenPos = null;
-        // Track previous head position for smooth movement animation
         this._prevHeadPos = null;
 
-        // Sync line-highlight scroll with editor scroll
         if (this.codeEditor && this.lineHighlights) {
             this.codeEditor.addEventListener('scroll', () => {
                 this.lineHighlights.scrollTop = this.codeEditor.scrollTop;
@@ -52,7 +36,7 @@ class UI {
         }
     }
 
-    // ── Tape rendering ───────────────────────────────────────
+    //  Tape rendering 
     renderTape(tm, varMap, lastAction) {
         const bounds  = tm.getBounds();
         const headPos = tm.head;
@@ -65,7 +49,6 @@ class UI {
             }
         }
 
-        // Check if head has moved (for smooth animation)
         const headMoved = (this._prevHeadPos !== null && this._prevHeadPos !== headPos);
 
         let html = '<div class="tape-strip">';
@@ -80,7 +63,6 @@ class UI {
             if (isHead)    cls += ' head';
             if (label)     cls += ' labelled';
             if (isWritten) cls += ' just-written';
-            // Add head-entering animation when head has moved to this cell
             if (isHead && headMoved) cls += ' head-entering';
 
             html += `<div class="${cls}" data-pos="${i}">
@@ -94,13 +76,10 @@ class UI {
 
         this.tapeContainer.innerHTML = html;
 
-        // Update previous head position
         this._prevHeadPos = headPos;
 
-        // Clear the written pos after one render so it only flashes once
         this._lastWrittenPos = null;
 
-        // Scroll to head cell smoothly
         requestAnimationFrame(() => {
             const headCell = this.tapeContainer.querySelector('.tape-cell.head');
             if (headCell) {
@@ -109,12 +88,10 @@ class UI {
         });
     }
 
-    /** Mark a cell as just-written so the next render flashes it. */
     markWritten(pos) {
         this._lastWrittenPos = pos;
     }
 
-    // ── State / Step / Phase display ─────────────────────────
     renderState(state) {
         this.stateDisplay.textContent = state;
 
@@ -139,7 +116,7 @@ class UI {
         }
     }
 
-    // ── Current Transition Display ───────────────────────────
+    //  Current Transition Display 
     renderTransition(entry) {
         if (!entry) {
             this.transitionDisplay.innerHTML =
@@ -170,14 +147,13 @@ class UI {
         this._flashTransition();
     }
 
-    /** Trigger a brief flash animation on the transition display. */
     _flashTransition() {
         this.transitionDisplay.classList.remove('flash');
         void this.transitionDisplay.offsetWidth; // reflow to restart animation
         this.transitionDisplay.classList.add('flash');
     }
 
-    // ── Halt Banner ──────────────────────────────────────────
+    //  Halt Banner 
     showHaltBanner() {
         this.haltBanner.classList.remove('hidden');
     }
@@ -185,7 +161,7 @@ class UI {
         this.haltBanner.classList.add('hidden');
     }
 
-    // ── Variables panel with hover linking ────────────────────
+    //  Variables panel with hover linking 
     renderVariables(tm, varMap) {
         if (!varMap || Object.keys(varMap).length === 0) {
             this.varsPanel.innerHTML = '<span class="empty-hint">No variables yet</span>';
@@ -209,7 +185,6 @@ class UI {
         html += '</table>';
         this.varsPanel.innerHTML = html;
 
-        // Attach hover events for variable ↔ tape cell linking
         this.varsPanel.querySelectorAll('tr[data-var-cell]').forEach(row => {
             const cellPos = parseInt(row.dataset.varCell, 10);
 
@@ -227,7 +202,6 @@ class UI {
         });
     }
 
-    // ── Log panel with color-coded entries ────────────────────
     clearLog() { this.logPanel.innerHTML = ''; }
 
     appendLog(entry) {
@@ -240,7 +214,6 @@ class UI {
         this.logPanel.scrollTop = this.logPanel.scrollHeight;
     }
 
-    /** Determine CSS class for a log entry based on its action type. */
     _logClass(entry) {
         const d = (entry.desc || '').toLowerCase();
         const t = (entry.transition || '').toLowerCase();
@@ -254,7 +227,7 @@ class UI {
         return '';
     }
 
-    // ── Error display ────────────────────────────────────
+    //  Error display 
     showError(msg) {
         this.errorPanel.textContent = msg;
         this.errorPanel.classList.add('visible');
@@ -264,7 +237,7 @@ class UI {
         this.errorPanel.classList.remove('visible');
     }
 
-    // ── Error line highlighting ──────────────────────────
+    //  Error line highlighting 
     highlightErrorLine(lineNum) {
         if (!this.lineHighlights || !this.codeEditor) return;
 
@@ -290,7 +263,7 @@ class UI {
         }
     }
 
-    // ── Button states ────────────────────────────────────────
+    //  Button states 
     setRunning(running) {
         this.btnRun.disabled   = running;
         this.btnPause.disabled = !running;
@@ -308,7 +281,7 @@ class UI {
         this.btnStep.disabled  = false;
     }
 
-    // ── Speed ────────────────────────────────────────────────
+    //  Speed 
     getDelay() {
         // slider 1 (slow) … 100 (fast)  →  delay 1200ms … 25ms
         const v = parseInt(this.speedSlider.value, 10);
@@ -318,7 +291,6 @@ class UI {
         this.speedLabel.textContent = `${this.speedSlider.value}%`;
     }
 
-    // ── Full reset of UI-specific state ──────────────────
     resetUIState() {
         this._prevVarVals    = {};
         this._lastWrittenPos = null;

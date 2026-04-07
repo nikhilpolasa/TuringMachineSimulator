@@ -10,10 +10,8 @@
 </head>
 <body>
 
-<!-- Decorative grid background -->
+<!-- Background visuals -->
 <div class="grid-bg"></div>
-
-<!-- Ambient glow orbs -->
 <div class="ambient-orb orb-1"></div>
 <div class="ambient-orb orb-2"></div>
 <div class="ambient-orb orb-3"></div>
@@ -25,7 +23,7 @@
 
 <main class="app-grid">
 
-    <!-- ─── Code Editor ─────────────────────────────────── -->
+    <!-- Code Editor -->
     <section class="panel editor-panel" id="editor-section">
         <div class="panel-title"><span class="dot dot-cyan"></span> Code Editor</div>
         <div class="editor-wrapper">
@@ -35,14 +33,14 @@
         </div>
     </section>
 
-    <!-- ─── Controls ────────────────────────────────────── -->
+    <!-- Controls -->
     <section class="panel control-panel" id="control-section">
         <div class="panel-title"><span class="dot dot-magenta"></span> Controls</div>
 
         <div class="control-buttons">
-            <button class="ctl-btn run"   id="btn-run">▶ Run</button>
+            <button class="ctl-btn run" id="btn-run">▶ Run</button>
             <button class="ctl-btn pause" id="btn-pause" disabled>⏸ Pause</button>
-            <button class="ctl-btn step"  id="btn-step">⏭ Step</button>
+            <button class="ctl-btn step" id="btn-step">⏭ Step</button>
             <button class="ctl-btn reset" id="btn-reset">⟳ Reset</button>
         </div>
 
@@ -68,7 +66,7 @@
         </div>
     </section>
 
-    <!-- ─── Current Transition ──────────────────────────── -->
+    <!-- Current Transition -->
     <section class="panel transition-panel" id="transition-section">
         <div class="panel-title"><span class="dot dot-green"></span> Current Transition</div>
         <div id="transition-display" class="transition-display">
@@ -76,24 +74,23 @@
         </div>
     </section>
 
-    <!-- ─── Tape Visualization ──────────────────────────── -->
+    <!-- Tape Visualization -->
     <section class="panel tape-panel" id="tape-section">
         <div class="panel-title"><span class="dot dot-green"></span> Tape</div>
         <div id="tape-container"></div>
-        <!-- Halt banner -->
         <div id="halt-banner" class="halt-banner hidden">
             <span class="halt-icon">✔</span>
             <span class="halt-text">MACHINE HALTED</span>
         </div>
     </section>
 
-    <!-- ─── Execution Log ───────────────────────────────── -->
+    <!-- Execution Log -->
     <section class="panel log-panel-wrap" id="log-section">
         <div class="panel-title"><span class="dot dot-orange"></span> Execution Log</div>
         <div id="log-panel"></div>
     </section>
 
-    <!-- ─── Variables ───────────────────────────────────── -->
+    <!-- Variables -->
     <section class="panel vars-panel-wrap" id="vars-section">
         <div class="panel-title"><span class="dot dot-purple"></span> Variables</div>
         <div id="vars-panel"><span class="empty-hint">No variables yet</span></div>
@@ -101,10 +98,10 @@
 
 </main>
 
-<!-- Error toast -->
+<!-- Error display -->
 <div id="error-panel"></div>
 
-<!-- Scripts (order matters: dependencies first) -->
+<!-- Script loading order is important (dependency chain) -->
 <script src="parser.js"></script>
 <script src="tm.js"></script>
 <script src="validator.js"></script>

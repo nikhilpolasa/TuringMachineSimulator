@@ -1,12 +1,9 @@
-/* ═══════════════════════════════════════════════════════════════
-   styles.css — Turing Machine Simulator
-   Premium Cyber-Glass Aesthetic
-   ═══════════════════════════════════════════════════════════════ */
+/* styles.css — Turing Machine Simulator */ 
 
-/* ── Fonts ──────────────────────────────────────────────────── */
+/*  Fonts  */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-/* ── Custom Properties ──────────────────────────────────────── */
+/*  Custom Properties  */
 :root {
     /* Core palette */
     --bg-base:        #0a0a0f;
@@ -54,7 +51,7 @@
     --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ── Reset ──────────────────────────────────────────────────── */
+/*  Reset  */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { font-size: 15px; scroll-behavior: smooth; }
@@ -72,7 +69,7 @@ body {
     position: relative;
 }
 
-/* ── Noise texture overlay ─────────────────────────────────── */
+/*  Noise texture overlay  */
 body::before {
     content: '';
     position: fixed;
@@ -83,7 +80,7 @@ body::before {
     opacity: 0.5;
 }
 
-/* ── Ambient background orbs ────────────────────────────────── */
+/*  Ambient background orbs  */
 .ambient-orb {
     position: fixed;
     border-radius: 50%;
@@ -115,7 +112,7 @@ body::before {
 @keyframes orbFloat2 { from { transform: translate(0, 0) scale(1) } to { transform: translate(-60px, -40px) scale(1.08) } }
 @keyframes orbFloat3 { from { transform: translate(-50%, 0) scale(1) } to { transform: translate(-40%, 35px) scale(1.15) } }
 
-/* ── Grid lines background (decorative) ────────────────────── */
+/*  Grid lines background  */
 .grid-bg {
     position: fixed;
     inset: 0;
@@ -129,7 +126,7 @@ body::before {
     -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%);
 }
 
-/* ── Header ────────────────────────────────────────────────── */
+/*  Header  */
 .app-header {
     text-align: center;
     padding: 2.4rem 1rem 1rem;
@@ -165,7 +162,7 @@ body::before {
     50% { background-position: 100% 50% }
 }
 
-/* ── Layout ────────────────────────────────────────────────── */
+/*  Layout  */
 .app-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -178,7 +175,7 @@ body::before {
     z-index: 1;
 }
 
-/* ── Glass Panel ───────────────────────────────────────────── */
+/*  Glass Panel  */
 .panel {
     background: var(--bg-panel);
     backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
@@ -228,7 +225,7 @@ body::before {
     }
 }
 
-/* ── Panel Title ───────────────────────────────────────────── */
+/*  Panel Title  */
 .panel-title {
     font-family: 'Poppins', sans-serif;
     font-size: 0.68rem;
@@ -257,7 +254,7 @@ body::before {
 .dot-green   { background: var(--green);   box-shadow: 0 0 10px var(--green); }
 .dot-orange  { background: var(--orange);  box-shadow: 0 0 10px var(--orange); }
 
-/* ── Code Editor ────────────────────────────────────────────── */
+/*  Code Editor  */
 .editor-panel { grid-column: 1; grid-row: 1; }
 
 .editor-wrapper {
@@ -316,7 +313,7 @@ body::before {
     50% { background: rgba(255, 23, 68, 0.16) }
 }
 
-/* ── Control Panel ──────────────────────────────────────────── */
+/*  Control Panel  */
 .control-panel { grid-column: 2; grid-row: 1; }
 
 .control-buttons {
@@ -421,7 +418,7 @@ body::before {
     box-shadow: 0 8px 32px rgba(255, 23, 68, 0.35), 0 0 20px rgba(255, 23, 68, 0.15);
 }
 
-/* ── Speed Slider ──────────────────────────────────────────── */
+/*  Speed Slider  */
 .speed-row {
     display: flex;
     align-items: center;
@@ -468,7 +465,7 @@ body::before {
     text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
 }
 
-/* ── Stats Row ─────────────────────────────────────────────── */
+/*  Stats Row  */
 .stats-row {
     display: flex;
     gap: 0.7rem;
@@ -519,7 +516,7 @@ body::before {
 #step-counter  { color: var(--cyan);   text-shadow: 0 0 6px rgba(0, 240, 255, 0.2); }
 #phase-display { color: var(--orange); font-size: 0.73rem; text-shadow: 0 0 6px rgba(255, 137, 6, 0.2); }
 
-/* ── Current Transition Panel ──────────────────────────────── */
+/*  Current Transition Panel  */
 .transition-panel {
     grid-column: 1 / -1;
     grid-row: 2;
@@ -582,7 +579,7 @@ body::before {
     50% { opacity: 1; transform: scale(1.15); }
 }
 
-/* ── Tape ───────────────────────────────────────────────────── */
+/*  Tape  */
 .tape-panel {
     grid-column: 1 / -1;
     grid-row: 3;
@@ -612,7 +609,7 @@ body::before {
     padding: 0 2rem;
 }
 
-/* ── Tape Cell ─────────────────────────────────────────────── */
+/*  Tape Cell  */
 .tape-cell {
     width: 66px;
     min-width: 66px;
@@ -665,7 +662,7 @@ body::before {
     text-shadow: 0 0 8px rgba(127, 90, 240, 0.4);
 }
 
-/* ── Active Head Cell ──────────────────────────────────────── */
+/*  Active Head Cell  */
 .tape-cell.head {
     border-color: var(--cyan);
     background: rgba(0, 240, 255, 0.06);
@@ -702,7 +699,7 @@ body::before {
     }
 }
 
-/* Head movement animation — applied briefly during transition */
+/* Head movement animation */
 .tape-cell.head-entering {
     animation: headEnter 0.45s var(--ease-spring);
 }
@@ -721,13 +718,13 @@ body::before {
     }
 }
 
-/* ── Labelled cells (variables) ────────────────────────────── */
+/*  Labelled cells (variables)  */
 .tape-cell.labelled {
     border-color: rgba(127, 90, 240, 0.18);
     background: rgba(127, 90, 240, 0.025);
 }
 
-/* ── Just-written cell flash ───────────────────────────────── */
+/*  Just-written cell flash  */
 .tape-cell.just-written {
     animation: cellWriteFlash 0.65s var(--ease-out-expo);
 }
@@ -757,7 +754,7 @@ body::before {
     100% { transform: scale(1); }
 }
 
-/* ── Highlighted cell (variable hover linking) ─────────────── */
+/*  Highlighted cell (variable hover linking)  */
 .tape-cell.highlight-link {
     border-color: var(--violet) !important;
     background: rgba(127, 90, 240, 0.08) !important;
@@ -765,7 +762,7 @@ body::before {
     transform: scale(1.08);
 }
 
-/* ── Head Indicator ────────────────────────────────────────── */
+/*  Head Indicator  */
 .head-indicator {
     text-align: center;
     font-family: 'Poppins', sans-serif;
@@ -782,7 +779,7 @@ body::before {
     50% { opacity: 1 }
 }
 
-/* ── Halt Banner ───────────────────────────────────────────── */
+/*  Halt Banner  */
 .halt-banner {
     display: flex;
     align-items: center;
@@ -835,7 +832,7 @@ body::before {
     text-shadow: 0 0 14px var(--green);
 }
 
-/* ── Log Panel ──────────────────────────────────────────────── */
+/*  Log Panel  */
 .log-panel-wrap {
     grid-column: 1;
     grid-row: 4;
@@ -900,7 +897,7 @@ body::before {
     to   { opacity: 1; transform: translateX(0); }
 }
 
-/* ── Variables Panel ────────────────────────────────────────── */
+/*  Variables Panel  */
 .vars-panel-wrap {
     grid-column: 2;
     grid-row: 4;
@@ -976,7 +973,7 @@ body::before {
     font-style: italic;
 }
 
-/* ── Error Display ──────────────────────────────────────────── */
+/*  Error Display  */
 #error-panel {
     position: fixed;
     bottom: 1.4rem;
@@ -1006,7 +1003,7 @@ body::before {
     transform: translateX(-50%) translateY(0);
 }
 
-/* ── Glow Pulse (state label) ──────────────────────────────── */
+/*  Glow Pulse */
 .glow-pulse {
     animation: glowPulse 0.5s ease;
 }
@@ -1016,13 +1013,13 @@ body::before {
     100% { text-shadow: none }
 }
 
-/* ── Utility: fade-in animation ────────────────────────────── */
+/*  Utility: fade-in animation  */
 @keyframes fadeInDown {
     from { opacity: 0; transform: translateY(-12px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Responsive ─────────────────────────────────────────────── */
+/*  Responsive  */
 @media (max-width: 920px) {
     .app-grid {
         grid-template-columns: 1fr;
